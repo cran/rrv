@@ -1,0 +1,60 @@
+%\VignetteIndexEntry{Random_Return_Variables_(rrv_0.0.2)}
+\documentclass {article}
+\usepackage {Sweave, color} 
+
+\setlength {\topmargin} {-1.5cm} 
+\setlength {\topskip} {0cm}     
+\setlength {\textheight} {22.5cm} 
+\setlength {\textwidth} {16.25cm}     
+\setlength {\oddsidemargin} {-0.0cm} 
+\setlength {\evensidemargin} {-0.0cm} 
+\linespread {1.10}
+\definecolor {navy}{rgb}{0,0,0.45}
+\definecolor {pine}{rgb}{0,0.2,0}
+
+\DefineVerbatimEnvironment{Sinput}{Verbatim} {xleftmargin=2em}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=2em}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+\SweaveOpts{keep.source=TRUE}
+
+\begin{document}
+
+<<echo=false>>=
+options(continue=" ")
+options(SweaveHooks=list(fig=function()
+par(mar=c(5.1, 4.1, 1.1, 2.1))))
+require (rrv)
+@
+
+\title {Random Return Variables (rrv 0.0.2) }
+\author {CHARLOTTE MAIA}
+\maketitle
+
+This package is incomplete. It is intended for modelling portfolio returns, and does not do that yet. It does however, provide some support for formatting money.
+
+Lets say we have some vector of cash values:
+<<>>=
+y = 4e7 * rnorm (30)
+@
+
+One thing that a spreadsheet will do better than the standard R distribution is format money. What we get here, isn't exactly what your average boardroom executive is expecting:
+<<>>=
+y
+@
+
+We we need is a function to format numeric vectors to look like money. The money.format command does just that. Here is the output using the default arguments.
+<<>>=
+print (money.format (y), quote=FALSE)
+@
+
+We can change the the number of decimal places, currency symbol, both the decimal and thousands separators, whether or not brackets are used for negative numbers, and also whether or not to append empty spaces to the characters. 
+
+<<>>=
+print (money.format (y, 2, "$ ", br=FALSE), quote=FALSE)
+@
+
+\end{document}
+
