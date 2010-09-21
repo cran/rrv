@@ -1,16 +1,19 @@
 \name{rrv}
-\alias{money.format}
-\title{Format Money Variables}
-\description{Format money variables, in a vaguely finance kind of way. This function takes a numeric vector and always returns a character vector. Any non-finite values are returned as NAs. If you want to format a variable in a data.frame object, replace the variable with a formatted character vector (noting this may be turned to a factor), e.g. df$x = money.format (df$x).}
+\alias{rrv}
+\alias{rprv}
+\alias{print.rrv}
+\alias{print.rprv}
+\title{random return variables}
+\description{Random return variables are objects representing the distributions of portfolio returns, here using ECDFs. The standard rrv object represents the (potentially multivariate) distribution of (potentially multiple) investment returns. The rprv object extends the rrv object, however represents the (always univariate) distribution of the weighted sum of the individual investment returns. Raw returns are realised returns, as a vector or matrix, and weights are a vector summing to one.}
 \usage{
-money.format (x, ndec=0, cs=NULL, sep=c (".", ","), br=TRUE, fill=TRUE)
+rrv (x, \dots)
+rprv (x, w, \dots)
+\method{print}{rrv}(x, \dots)
+\method{print}{rprv}(x, \dots)
 }
 \arguments{
-\item{x}{A numeric vector. Can be length zero or contain non-finite values.}
-\item{ndec}{Number of decimal places.}
-\item{cs}{Currency symbol. Unless null, this should be a character.}
-\item{sep}{Character vector of length two, giving the decimal and thousands separators respectively.}
-\item{br}{Include brackets around negative numbers for emphasis.}
-\item{fill}{Insert empty spaces to beginning and end of the final character vector, to ensure correct alignment.}
+\item{x}{.}
+\item{w}{.}
+\item{\dots}{.}
 }
 
