@@ -1,5 +1,10 @@
-money.format = function (x, ndec=0, cs=NULL, sep=c (".", ","), br=TRUE, fill=TRUE)
-{	v = is.finite (x)
+money = function (x) structure (x, class="money")
+
+format.money = function (x, ndec=0, cs=NULL, sep=c (".", ","), fill=TRUE, ...)
+{	#was argument
+	br=FALSE
+
+	v = is.finite (x)
 	nv = length (v)
 	ok = all (v)
 	if (!ok) x = x [v]
@@ -49,5 +54,5 @@ money.format = function (x, ndec=0, cs=NULL, sep=c (".", ","), br=TRUE, fill=TRU
 	else as.character (rep (NA, nv) )
 }
 
-
+moneyf = function (x, ...) format.money (x, ...)
 

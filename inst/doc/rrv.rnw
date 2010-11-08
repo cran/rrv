@@ -1,0 +1,234 @@
+%\VignetteIndexEntry{Random_Return_Variables}
+
+\documentclass {article}
+\usepackage {maia2}
+\SweaveOpts{keep.source=TRUE}
+\SweaveOpts{prefix.string=tmp}
+\begin{document}
+
+<<echo=false>>=
+options(continue=" ")
+options(SweaveHooks=list(fig=function()
+par(mar=c(5.1, 4.1, 1.1, 2.1))))
+library (rrv)
+@
+
+\setkeys{Gin}{width=0.6\textwidth}
+
+\mtitle {rrv}{0.2.0}{Random Return Variables\\(Rough Draft)}
+
+\mabstract {This vignette introduces the rrv package, a package for modelling portfolio returns as random variables. There's a strong emphasis on modelling portfolios as functions of weight, and using empirical distributions.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\msec {Introduction}
+
+This package is largely inspired by the early work of Markowitz (1952, 1959). Markowitz considered the characteristics of portfolio returns, where both portfolio returns and individual security returns are regarded as random variables. He emphasized selecting efficient sets of portfolios, giving a good compromise between expected return and variance, under the assumption that security returns are often dependent. He then creates geometric representations of portfolios (especially portfolios with three securities), using isomean lines and isovariance curves. Here, we follow from Markowitz, however with a few key differences:
+\begin {enumerate}
+	\item We shall treat and emphasize portfolios as functions of weight.
+	\item Following the notion that portfolios are functions of weight, instead of modelling weights in a cartesian space, we shall use a triangular space.
+	\item We shall model historical returns using empirical distributions.
+	\item Whilst we shall consider variance, we shall also consider quantiles.
+\end {enumerate}
+
+\noindent This package is still at a very early stage. The author is hoping to later add support for:
+\begin {itemize}
+	\item Constrained optimisation.
+	\item Modelling isoquantile curves (i.e. the quantile equivalent to isovariance curves).
+	\item Triangular contour plots.
+\end {itemize}
+
+\noindent We shall make use of the dataset from Markowitz (1959), it gives discounted returns for nine securities over an eighteen year period.
+
+<<>>=
+x = markowitz1959data ()
+x [c (1:2, 17:18),]
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\msec {Portfolios as Functions of Weight}
+
+Portfolio return $Y$, which is itself a random variable, can be regarded as the dot product of a vector of weights $\mathbf {w}$ and a vector random variable $\mathbf {X}$. Equivalently, it can also be regarded as the weighted sum of multiple (often dependent) random variables $X_1, X_2, ..., X_k$.
+\begin {eqnarray*}
+	Y	&=& \mathbf {w X}\\
+		&=& w_1 X_1 + w_2 X_2 + ... + w_k X_k
+\end {eqnarray*}
+
+\noindent We will assume that the weights always sum to one, hence it's more precise to regard portfolio return as a weighted average (rather than weighted sum). This also allows us to model weights in a triangular space (rather than a cartesian space).
+
+Before we continue, we need to clarify two important notions, function valued functions and random variable valued functions. Perhaps the most common example of a function valued function is differentiation. When we differentiate a function, differentiation itself can be regarded as a function, say $\mathrm {diff}$, that maps a function to a function. So $\mathrm {f}' = \mathrm {diff} (\mathrm {f})$. Just as functions can return functions, functions can also return random variables. Perhaps the most common example is the mean (of random variables). The mean of the elements of a vector variable random, can be regarded as function, that maps a vector random variable to a scalar random variable. So $Y = \mathrm {mean} (\mathbf {X})$.
+
+In our case, we will construct a portfolio $\mathrm {g}$, from a set of historical returns. We have a portfolio constructor $\mathrm {C_g}$, which is a function, that maps a matrix of historical returns $\mathbf {x}$ (the realised values of $\mathbf {X}$) to a portfolio. We shall regard a portfolio as a function that maps a vector of weights to portfolio return. So:
+\begin {eqnarray*}
+	g &=& \mathrm {C_g} (\mathbf {x})\\
+	Y &=& \mathrm {g} (\mathbf {w})
+\end {eqnarray*}
+
+\noindent The portfolio is based on the weighted sum given earlier, and treats the random variables as constants (constant in the sense that their distributions are constant). Exactly what $\mathrm {g}$, $\mathbf {X}$ and $Y$ are, is discussed later. For now, let's take things a step further, and derive conditional parameters of $Y$.
+
+Following the notion that a portfolio is a function of weight, we can also compute the expected value of portfolio return as a function of weight. This function is constructed from a portfolio, so:
+\begin {eqnarray*}
+	\mathrm {f_\mathbb{E}} &=& \mathrm {C_{\mathbb {E} } } (\mathrm {g})\\
+	\mathbb {E} (Y | \mathbf {w}) &=& \mathrm {f_\mathbb {E}} (\mathbf {w})
+\end {eqnarray*}
+
+\noindent We are going to be unorthodox, and denote variance using $\mathbb {V}$ and quantiles as $\mathbb {Q}$. We compute can compute them (and almost any conditional parameter) in the same manner, so:
+\begin {eqnarray*}
+	\mathrm {f_\mathbb{V}} &=& \mathrm {C_{\mathbb {V} } } (\mathrm {g})\\
+	\mathrm {f_\mathbb{Q}} &=& \mathrm {C_{\mathbb {Q} } } (\mathrm {g}, p)\\
+	\mathbb {V} (Y | \mathbf {w}) &=& \mathrm {f_\mathbb {V}} (\mathbf {w})\\
+	\mathbb {Q} (Y | \mathbf {w}) &=& \mathrm {f_\mathbb {Q}} (\mathbf {w})
+\end {eqnarray*}
+
+\noindent Note that the $p$ in the constructor for quantile return is probability, and is a number between zero and one.
+
+Using rrv we can construct a portfolio for the two investment (or two security) case, using say, the first two securities in the dataset. We can then go on to create functions for expected return, variance (of) return, and quantile return.
+<<>>=
+names (x) [2:3]
+g = portfolio (x [,2:3])
+fe = expectedpr (g)
+fv = variancepr (g)
+fq25 = quantilepr (g, 0.25)
+fq50 = medianpr (g)
+@
+
+\noindent If we want, we can compute the expected return of a portfolio, which contains equal weighting over both investments.
+<<>>=
+fe (c (0.5, 0.5) )
+@
+
+\noindent We can also plot the expected return and variance of return.
+\begin {center}
+<<fig=TRUE, width=7, height=4>>=
+par (mfrow=c (1, 2) )
+plot (fe, main="expected return")
+plot (fv, main="variance of return")
+@
+\end {center}
+
+\noindent As well as, the 0.25 and 0.5 quantiles.
+\begin {center}
+<<fig=TRUE, width=7, height=4>>=
+par (mfrow=c (1, 2) )
+plot (fq25, main="0.25 quantile return")
+plot (fq50, main="median return")
+@
+\end {center}
+
+\noindent Many textbooks consider standard deviation versus expected return. At present the implementations are not fully vectorised, so:
+\begin {center}
+<<fig=TRUE, width=7, height=4>>=
+s = seq (0, 1, length=20)
+re = rsd = numeric (20)
+fsd = sdpr (g)
+for (i in 1:20)
+{	w = c (s [i], 1 - s [i])
+	re [i] = fe (w)
+	rsd [i] = fsd (w)
+}
+plot (rsd, re, type="l")
+@
+\end {center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\msec {Visualising Portfolios over Triangular Spaces}
+
+We have suggested that weight exists in a triangular space (or equivalently, that portfolios are triangular functions). This principle is most intuitive in the case of three investments.
+
+The examples used in the previous section, works using three investments as well. Hopefully contour plots will be implemented soon. Currently, this uses heat maps, with bright colours (white and yellow) representing high values and darker colours (red) representing low values.
+<<>>=
+names (x) [2:4]
+g = portfolio (x [,2:4])
+fe = expectedpr (g)
+fv = variancepr (g)
+fq25 = quantilepr (g, 0.25)
+fq50 = medianpr (g)
+@
+
+\begin {center}
+<<fig=TRUE>>=
+plot (fe)
+@
+<<fig=TRUE>>=
+plot (fv)
+@
+<<fig=TRUE>>=
+plot (fq25)
+@
+<<fig=TRUE>>=
+plot (fq50)
+@
+\end {center}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\msec {Returns with Empirical Distributions}
+
+Up to this point, we haven't really discussed what $\mathbf {X}$ and $Y$ really are. This package assumes that random variables have an almost arbitrary distribution that can be modelled using an empirical cumulative distribution function (ECDF). In the case of vector random variables, we assume a multivariate ECDF, however at present this package does not make use of multivariate ECDFs (even though we will use the mecdf function).
+
+ECDFs are modelled uses realised values of a random variable, and we can plot their distributions. Using all our data:
+\begin {center}
+<<fig=TRUE>>=
+par (mfrow=c (3, 3) )
+for (j in 2:10)
+	plot (mecdf (x [,j], continuous=FALSE), main=names (x) [j])
+@
+\end {center}
+
+\noindent Note that at the time of writing, there's is a minor error in the mecdf package when computing continuous ECDFs (which is the default in the univariate case).
+
+Roughly speaking, we can compute a vector of realised values for $Y$, which we shall denote $\mathbf {y}$. This uses a trivial extension to the expression used at the beginning of section two (on modelling portfolios as function). Remember that $\mathbf {x}$ is a matrix (not a regular vector).
+\[	\mathbf {y} = \mathbf {x w}
+\]
+
+\noindent In this package, we can create rrv (random return variable) objects from matrices (or any object that can be converted to a matrix). We can also create rprv objects (random portfolio return objects), using an rrv object and a vector of weights. rprv objects are what is returned by portfolio functions and are based on the expression above.
+
+We can create a portfolio, then compute (and plot) different rprv objects.
+<<>>=
+names (x) [4:5]
+g = portfolio (x [,4:5])
+@
+
+\begin {center}
+<<fig=TRUE, width=7, height=3>>=
+par (mfrow=c (1, 2) )
+plot (g (c (0.25, 0.75) ) )
+plot (g (c (0.75, 0.25) ) )
+@
+\end {center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\msec {Utility Functions}
+
+Note, here ``utility'', is utility in the programming sense.
+
+A simple issue, which needs to be dealt with in R, is formatting numeric vectors to look like money. The can be achieved with the moneyf function (or creating a money object, see the Rd file).
+<<>>=
+#some random numbers...
+x = 4e7 * rnorm (30)
+
+print (moneyf (x), quote=FALSE)
+print (moneyf (x, 2, "$ "), quote=FALSE)
+@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\msec {References}
+
+Markowitz, H.M. (1952). Journal of Finance. Portfolio Selection.\\
+Markowitz, H.M. (1959). Cowles Foundation. Portfolio Selection Efficient Diversification of Investments.
+
+\end{document}
+
+

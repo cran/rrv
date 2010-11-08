@@ -2,14 +2,14 @@
 \alias{rrv}
 \alias{rprv}
 \alias{print.rrv}
-\alias{print.rprv}
+\alias{plot.rrv}
 \title{random return variables}
-\description{Random return variables are objects representing the distributions of portfolio returns, here using ECDFs. The standard rrv object represents the (potentially multivariate) distribution of (potentially multiple) investment returns. The rprv object extends the rrv object, however represents the (always univariate) distribution of the weighted sum of the individual investment returns. Raw returns are realised returns, as a vector or matrix, and weights are a vector summing to one.}
+\description{Random return variables, rrv objects, are (extended) matrices of realised returns, which in principle, represent a random variable with an empirical distribution. Standard rrv objects are potentially multivariate, and represent returns over one or more investments. Random portfolio return variables, rprv objects, are always univariate, and represent the weighted sum (generally weighted average) of one or more investment returns. rrv objects are created from a matrix or any object that can be converted to a matrix.}
 \usage{
-rrv (x, \dots)
-rprv (x, w, \dots)
+rrv (x)
+rprv (x, w)
 \method{print}{rrv}(x, \dots)
-\method{print}{rprv}(x, \dots)
+\method{plot}{rrv}(x, \dots)
 }
 \arguments{
 \item{x}{.}
