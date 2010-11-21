@@ -1,7 +1,18 @@
-money = function (x) structure (x, class="money")
+money = function (x, cs="", sep=c (".", ","), nd=2, fill=TRUE)
+	extend (REAL (x), "money", cs, sep, nd, fill)
 
-format.money = function (x, ndec=0, cs=NULL, sep=c (".", ","), fill=TRUE, ...)
-{	#was argument
+print.money = function (x, ...)
+	print (format (x, ...), quote=FALSE)
+
+format.money = function (x, cs, sep,  nd, fill, ...)
+{	if (missing (cs) ) cs = x$cs
+	if (missing (sep) ) sep = x$sep
+	if (missing (nd) ) nd = x$nd
+	if (missing (fill) ) fill = x$fill
+	x = as.numeric (x)
+
+	if (cs == "") cs = NULL
+	ndec = nd
 	br=FALSE
 
 	v = is.finite (x)
@@ -54,5 +65,9 @@ format.money = function (x, ndec=0, cs=NULL, sep=c (".", ","), fill=TRUE, ...)
 	else as.character (rep (NA, nv) )
 }
 
-moneyf = function (x, ...) format.money (x, ...)
+moneyp = function (x, ...)
+	print (moneyf (x, ...), quote=FALSE)
+
+moneyf = function (x, cs="", sep=c (".", ","), nd=2, fill=TRUE)
+	format.money (x, cs, sep, nd, fill)
 

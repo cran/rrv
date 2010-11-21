@@ -1,0 +1,53 @@
+\SweaveOpts{keep.source=TRUE}
+\SweaveOpts{prefix.string=tmp-v1s3}
+
+<<echo=false>>=
+options(continue=" ")
+options(SweaveHooks=list(fig=function()
+par(mar=c(4.1, 4.1, 2.6, 1.6), cex=0.7, cex.main=1)))
+library (rrv)
+library (rrv)
+if (!exists ("x") ) x = markowitz1959data ()
+@
+
+We have suggested that weight exists in a triangular space (or equivalently, that portfolios are triangular functions). This principle is most intuitive in the case of three investments.
+
+The examples used in the previous section, works using three investments as well. Hopefully contour plots will be implemented soon. Currently, this uses heat maps, with bright colours representing high values and dark colours representing low values.
+
+Note that each plot, uses a separate scale (in order to achieve maximum colour variation). Hence, two points with the same colour, each from a separate plot, may represent quite different values.
+<<>>=
+g = portfolio (x [,2:4])
+portfolio.names (g)
+@
+
+<<>>=
+fe = expectedpr (g)
+fv = variancepr (g)
+fq.25 = quantilepr (g, 0.25)
+fq.50 = medianpr (g)
+fq.75 = quantilepr (g, 0.75)
+@
+
+\begin {center}
+<<fig=TRUE, width=3.25, height=3.25>>=
+#expected portfolio return
+plot (fe)
+@
+<<fig=TRUE, width=3.25, height=3.25>>=
+#portfolio return variance
+plot (fv)
+@
+<<fig=TRUE, width=3.25, height=3.25>>=
+#quantile (0.25) portfolio return
+plot (fq.25)
+@
+<<fig=TRUE, width=3.25, height=3.25>>=
+#median portfolio return
+plot (fq.50)
+@
+<<fig=TRUE, width=3.25, height=3.25>>=
+#quantile (0.75) portfolio return
+plot (fq.75)
+@
+\end {center}
+

@@ -3,6 +3,11 @@ portfolio = function (x)
 	extend (f, "portfolio")
 }
 
+portfolio.names = function (f) .names (f)
+.names = function (f) colnames (f$x)
+
+.xpr = function (f, sc, names) extend (f, c (sc, "pr"), names)
+
 #todo: all pr functions, need to be vectorised for w
 #todo: update plotting functions to reflect this
 expectedpr = function (f)
@@ -33,28 +38,33 @@ medianpr = function (f)
 	.xpr (g, "medianpr", .names (f) )
 }
 
-.names = function (f, ...) colnames (f$x)
-#.names = function (f, ...) f$names
-
-.xpr = function (f, sc, names) extend (f, c (sc, "pr"), names)
-
-#note, f$names used for nc
+#note, f$names used to compute n
 plot.pr = function (f, ...)
 {	n = length (f$names)
 	if (n == 2) .plot.pr2 (f, ...)
 	else if (n == 3) .plot.pr3 (f, ...)
 	else stop ("can only plot 2 or 3 variable case")
+	invisible (NULL)
 }
 
-.plot.pr2 = function (f, type="l", ..., n=30)
+.plot.pr2 = function (f, ylab=class (f) [1], ..., n=25)
 {	w = seq (0, 1, length=n)
 	r = numeric (n)
-	for (i in 1:n) r [i] = f (c (w [i], 1 - w [i]) )
-	plot (w, r, type=type, ...)
+	for (i in 1:n) r [i] = f (c (1 - w [i], w [i]) )
+	plot (w, r, type="l", xaxt="n", ylab=ylab, ...)
+	axis (1, c (0, 1), f$names)
+	i = c (1, n)
+	points (w [i], r [i], pch=16, cex=1.5)
 }
 
-.plot.pr3 = function (f, ...) tcp (f, ...)
-
+.plot.pr3 = function (f, heat=TRUE, contour=TRUE, ..., n=30)
+{	if (heat)
+	{	thm (f, n, ...)
+		#if (contour) lines (f)
+	}
+	else if (contour)
+		tcp (f, ...)
+}
 
 
 

@@ -1,0 +1,71 @@
+%\VignetteIndexEntry{Utility_Functions}
+
+\documentclass {article}
+\usepackage {maia2}
+\SweaveOpts{keep.source=TRUE}
+\SweaveOpts{prefix.string=tmp-rrv2}
+\begin{document}
+
+<<echo=false>>=
+options(continue=" ")
+options(SweaveHooks=list(fig=function()
+par(mar=c(4.1, 4.1, 2.6, 1.6), cex=0.7, cex.main=1)))
+library (rrv)
+@
+
+\setkeys{Gin}{width=0.6\textwidth}
+
+\mtitle {rrv}{0.3.0}{Utility Functions\\(Draft)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\msec {Money Formatting}
+
+The rrv package provides money objects, to support the formatting of money. Money objects are created using the money constructor. Arguments to the constructor (see money, in it's Rd file), control the way that money is formatted. Money's print and format methods, accept the same arguments as the constructor, and can override the object's attributes.
+<<>>=
+#create some random numbers
+v = 6e5 * rnorm (20)
+@
+
+<<>>=
+#create a standard money object
+x = money (v)
+x
+@
+
+<<>>=
+#create a money object with a dollar sign
+x = money (v, cs="$")
+x
+@
+
+<<>>=
+#print the same money object with no dollar sign and no decimal places
+print (x, cs="", nd=0)
+@
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\msec {Simplified Money Formatting}
+
+Often, one merely wishes to format a numeric vector. So the rrv package, also provide the functions moneyp and moneyf, for printing (formatted) and formatting respectively, numeric vectors as money. These functions also use the same arguments as the constructor.
+<<>>=
+#create some new random numbers
+v = 5e5 * rnorm (20)
+@
+
+<<>>=
+#format as money 
+moneyf (v, fill=FALSE)
+@
+
+
+
+
+\end{document}
+
+

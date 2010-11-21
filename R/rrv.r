@@ -8,6 +8,7 @@ rrv = function (x)
 
 rprv = function (x, w)
 {	y = .rprv (x, w)
+	colnames (y) = "x"
 	extend (rrv (y), "rprv")
 }
 
@@ -21,4 +22,5 @@ plot.rrv = function (x, ...)
 }
 
 .rprv = function (x, w) x %*% w
+
 
