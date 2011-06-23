@@ -1,5 +1,5 @@
 money = function (x, cs="", sep=c (".", ","), nd=2, fill=TRUE)
-	extend (REAL (x), "money", cs, sep, nd, fill)
+	extend (REALv (x), "money", cs, sep, nd, fill)
 
 print.money = function (x, ...)
 	print (format (x, ...), quote=FALSE)

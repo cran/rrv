@@ -13,7 +13,7 @@ par(mar=c(4.1, 4.1, 2.6, 1.6), cex=0.7, cex.main=1)))
 library (rrv)
 @
 
-\mtitle {rrv}{0.3.0}{Random Return Variables\\(Draft)}
+\mtitle {rrv}{0.3.1}{Random Return Variables\\(Draft)}
 
 \mabstract {This vignette introduces the rrv package, a package for modelling portfolio returns as random variables. There's a strong emphasis on modelling portfolios as functions of weight, and using empirical distributions.}
 

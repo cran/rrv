@@ -22,9 +22,9 @@ variancepr = function (f)
 	.xpr (g, "variancepr", .names (f) )
 }
 
-#todo: implement inverse continuous (u)ecdf function
 quantilepr = function (f, p)
-{	g = FUNCTION (function (w) quantile (.rprv (x, w), p, names=FALSE), x=f$x, p)
+{	#g = FUNCTION (function (w) quantile (.rprv (x, w), p, names=FALSE), x=f$x, p)
+	g = FUNCTION (function (w) ecdfinv (.rprv (x, w), p), x=f$x, p)
 	.xpr (g, "quantilepr", .names (f) )
 }
 
@@ -33,6 +33,7 @@ sdpr = function (f)
 	.xpr (g, "sdpr", .names (f) )
 }
 
+#may not be same as quantilepr (if duplicates)
 medianpr = function (f)
 {	g = FUNCTION (function (w) median (.rprv (x, w) ), x=f$x)
 	.xpr (g, "medianpr", .names (f) )
@@ -65,6 +66,7 @@ plot.pr = function (f, ...)
 	else if (contour)
 		tcp (f, ...)
 }
+
 
 
 

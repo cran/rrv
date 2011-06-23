@@ -15,7 +15,7 @@ library (rrv)
 
 \setkeys{Gin}{width=0.6\textwidth}
 
-\mtitle {rrv}{0.3.0}{Utility Functions\\(Draft)}
+\mtitle {rrv}{0.3.1}{Utility Functions\\(Draft)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Section
