@@ -71,7 +71,7 @@ tcp = function (f, ...)
 		if (fmin == fmax) mf [] = 0.05
 		else mf = 0.9 * (mf - fmin) / (fmax - fmin) + 0.05
 	}
-	LIST (n, mx, my, mf, u)
+	implant (LIST (), n, mx, my, mf, u)
 }
 
 .thmp = function (x, y, v, cols)
@@ -114,6 +114,4 @@ tcp = function (f, ...)
 	x = (a - 1) + (1 - a - b) * 2
 	c (x, y)
 }
-
-
 

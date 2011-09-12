@@ -1,5 +1,5 @@
 money = function (x, cs="", sep=c (".", ","), nd=2, fill=TRUE)
-	extend (REALv (x), "money", cs, sep, nd, fill)
+	extend (VECTOR (x), "money", cs, sep, nd, fill)
 
 print.money = function (x, ...)
 	print (format (x, ...), quote=FALSE)
@@ -70,4 +70,5 @@ moneyp = function (x, ...)
 
 moneyf = function (x, cs="", sep=c (".", ","), nd=2, fill=TRUE)
 	format.money (x, cs, sep, nd, fill)
+
 

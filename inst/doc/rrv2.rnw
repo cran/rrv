@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{Utility_Functions}
+%\VignetteIndexEntry{Formatting_Functions}
 
 \documentclass {article}
 \usepackage {maia2}
@@ -15,7 +15,7 @@ library (rrv)
 
 \setkeys{Gin}{width=0.6\textwidth}
 
-\mtitle {rrv}{0.3.1}{Utility Functions\\(Draft)}
+\mtitle {rrv}{0.4.0}{Formatting Functions\\(Draft)}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Section

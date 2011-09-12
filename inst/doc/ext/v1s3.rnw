@@ -6,48 +6,45 @@ options(continue=" ")
 options(SweaveHooks=list(fig=function()
 par(mar=c(4.1, 4.1, 2.6, 1.6), cex=0.7, cex.main=1)))
 library (rrv)
-library (rrv)
-if (!exists ("x") ) x = markowitz1959data ()
+data = read.package.data ("rrv", "markowitz.csv")
 @
 
-We have suggested that weight exists in a triangular space (or equivalently, that portfolios are triangular functions). This principle is most intuitive in the case of three investments.
-
-The examples used in the previous section, works using three investments as well. Hopefully contour plots will be implemented soon. Currently, this uses heat maps, with bright colours representing high values and dark colours representing low values.
+\noindent In general, weight represents a triangle (potentially a hyper-triangle). This is the most intuitive in the 3-source case, where triangular heatmaps, show the value of a conditional parameter given a vector of 3 weights. In future contour plots may be used instead.
 
 Note that each plot, uses a separate scale (in order to achieve maximum colour variation). Hence, two points with the same colour, each from a separate plot, may represent quite different values.
 <<>>=
-g = portfolio (x [,2:4])
-portfolio.names (g)
+x = as.matrix (data [,2:4])
+samp (x)
 @
 
 <<>>=
-fe = expectedpr (g)
-fv = variancepr (g)
-fq.25 = quantilepr (g, 0.25)
-fq.50 = medianpr (g)
-fq.75 = quantilepr (g, 0.75)
+f_expected = cpr_expected (x)
+f_variance = cpr_variance (x)
+f_q0.25 = cpr_quantile (0.25, x)
+f_q0.50 = cpr_quantile (0.50, x)
+f_q0.75 = cpr_quantile (0.75, x)
 @
 
 \begin {center}
 <<fig=TRUE, width=3.25, height=3.25>>=
 #expected portfolio return
-plot (fe)
+plot (f_expected)
 @
 <<fig=TRUE, width=3.25, height=3.25>>=
 #portfolio return variance
-plot (fv)
+plot (f_variance)
 @
 <<fig=TRUE, width=3.25, height=3.25>>=
 #quantile (0.25) portfolio return
-plot (fq.25)
+plot (f_q0.25)
 @
 <<fig=TRUE, width=3.25, height=3.25>>=
 #median portfolio return
-plot (fq.50)
+plot (f_q0.50)
 @
 <<fig=TRUE, width=3.25, height=3.25>>=
 #quantile (0.75) portfolio return
-plot (fq.75)
+plot (f_q0.75)
 @
 \end {center}
 
