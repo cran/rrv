@@ -1,9 +1,9 @@
 %\VignetteIndexEntry{Random_Return_Variables}
-
 \documentclass {article}
 \usepackage {maia2}
 \SweaveOpts{keep.source=TRUE}
-\SweaveOpts{prefix.string=tmp-rrv1}
+\SweaveOpts{eps=FALSE}
+\SweaveOpts{prefix.string=tmp-rrv}
 \begin{document}
 
 <<echo=false>>=
@@ -12,7 +12,7 @@ options(SweaveHooks=list(fig=function()
 par(mar=c(4.1, 4.1, 2.6, 1.6), cex=0.7, cex.main=1)))
 @
 
-\mtitle {rrv}{0.4.0}{Random Return Variables\\(Rewrite, Rough Draft)}
+\mtitle {rrv}{0.4.1}{Random Return Variables\\(Rewrite, Rough Draft)}
 
 \mabstract {This vignette gives an overview of the rrv package. The package is partly based on Markowitz (1952), however considers empirical distributions. There's a strong emphasis on modelling conditional portfolio returns as functions of weight. Various ``conditional parameters'' are considered, including expected returns and quantile returns.}
 
@@ -51,8 +51,8 @@ library (rrv)
 
 \noindent The package makes use of the dataset from Markowitz (1959), which gives discounted returns for nine securities over an eighteen year period.
 <<>>=
-data = read.package.data ("rrv", "markowitz.csv")
-samp (data)
+data = read_package_data ("rrv", "markowitz.csv", FALSE)
+sample_deterministic (data)
 @
 
 \noindent Consistent with Markowitz, lets consider expected values and variances.
@@ -191,9 +191,9 @@ Despite these problems, we will still consider some examples.
 
 <<fig=TRUE, width=5, height=3>>=
 #3-source, incorrect, giving 2-source subsets
-m = as.matrix (data [,5:7])
-.textbookplot (m)
+.textbookplot (data [,2:4])
 #superimpose equally-weighted portfolio
+m = as.matrix (data [,2:4])
 w = c (1, 1, 1) / 3
 x = cpr_sd (m)(w)
 y = cpr_expected (m)(w)
@@ -246,9 +246,6 @@ plot (y)
 		&\vdots \\
 	y_n &=& \mathbf {w r}_n
 \end {eqnarray*}
-
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Section

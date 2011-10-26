@@ -13,7 +13,8 @@ rprv = function (x, w=rep (1, ncol (x) ) )
 	extend (rrv (y), "rprv")
 }
 
-print.rrv = function (x, ...) print.default (x, ...)
+print.rrv = function (x, ...)
+	print.default (x)
 
 plot.rrv = function (x, ...)
 {	if (ncol (x) <= 2)
@@ -22,9 +23,10 @@ plot.rrv = function (x, ...)
 		warning ("couldn't plot rrv")
 }
 
-samp.rrv = function (x, n=3, m=n)
-	samp.matrix (x, n, m)
+sample.rrv = function (x, n=3, m=n, ...)
+	sample_deterministic (x, n, m)
 
 .rprv = function (x, w) x %*% w
+
 
 

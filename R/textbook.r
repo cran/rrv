@@ -27,7 +27,7 @@
 		y = p [,2]
 		xlim = range (x)
 		xlim = xlim + 0.25 * c (-1, 1) * diff (xlim)
-		plot (x, y, xlim=xlim, pch=16, cex=1.5, col="grey", , xlab="sd", ylab="expected")
+		plot (x, y, xlim=xlim, pch=16, cex=1.5, col="grey", xlab="sd", ylab="expected")
 		.textbook.lines (f_sd, f_expected, c (1, 0, 0), c (0, 1, 0) )
 		.textbook.lines (f_sd, f_expected, c (1, 0, 0), c (0, 0, 1) )
 		.textbook.lines (f_sd, f_expected, c (0, 1, 0), c (0, 0, 1) )
@@ -52,7 +52,6 @@
 		.textbook.lines (f_sd, f_expected, c (0, 1, 0, 0), c (0, 0, 0, 1) )
 		.textbook.lines (f_sd, f_expected, c (0, 0, 1, 0), c (0, 0, 0, 1) )
 		text (x, y, names)
-	
 	}
 	else
 		stop ("textbookplot supports 2 to 4 variables")

@@ -7,7 +7,6 @@
 \alias{cpr_rrv}
 \alias{portfolio.names}
 \alias{plot.cppr}
-\alias{s3x_plot.cppr}
 \title{portfolio functions}
 \description{As of rrv 0.4.0, cpr (conditional portfolio return) objects are created directly from an rrv object or a matrix and represent functions of weight. cpr_rrv objects return rprv objects, while cppr objects (e.g. cpr_expected) return numerics.}
 \usage{
@@ -18,8 +17,7 @@ cpr_median (x)
 cpr_sd (x)
 cpr_rrv (x)
 portfolio.names (f)
-\method{plot}{cppr}(x, \dots)
-\method{s3x_plot}{cppr}(f, \dots)
+\method{plot}{cppr}(f, \dots)
 }
 \arguments{
 \item{f}{A cppr object.}
@@ -27,4 +25,5 @@ portfolio.names (f)
 \item{p}{Quantile as a probability, between 0 and 1.}
 \item{\dots}{.}
 }
+
 

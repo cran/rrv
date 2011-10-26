@@ -1,17 +1,12 @@
 bldcmd=R CMD Sweave
 
-rrv1.pdf: rrv1.tex v1s3.tex maia2.sty
-	pdflatex rrv1.tex
+rrv.pdf: rrv.tex v1s3.tex maia2.sty
+	pdflatex rrv.tex
 
-rrv2.pdf: rrv2.tex maia2.sty
-	pdflatex rrv2.tex
-
-rrv1.tex: rrv1.rnw
-	$(bldcmd) rrv1.rnw
-
-rrv2.tex: rrv2.rnw
-	$(bldcmd) rrv2.rnw
+rrv.tex: rrv.rnw
+	$(bldcmd) rrv.rnw
 
 v1s3.tex: ext/v1s3.rnw
 	$(bldcmd) ext/v1s3.rnw
+
 

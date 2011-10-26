@@ -1,11 +1,9 @@
 default:
-	make -f make-ext rrv1.pdf
-	make -f make-ext rrv2.pdf
+	make -f make-ext rrv.pdf
 	make clean
 
 enhanced:
-	make -f make-ext rrv1.pdf bldcmd=makesweave
-	make -f make-ext rrv2.pdf bldcmd=makesweave
+	make -f make-ext rrv.pdf bldcmd=makesweave
 
 init:
 	rm -f /tmp/makesweavepipe
@@ -19,4 +17,5 @@ clean:
 	rm -f *.log
 	rm -f tmp*
 	rm -f Rplots*
+
 

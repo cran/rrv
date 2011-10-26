@@ -52,9 +52,7 @@ cpr_sd = function (x)
 portfolio.names = function (f) .names (f)
 .names = function (f) colnames (f$x)
 
-plot.cppr = function (x, ...) s3x_plot (f=x, ...)
-
-s3x_plot.cppr = function (f, ...)
+plot.cppr = function (f, ...)
 {	if (f$nv == 2) .plot.pr2 (f, ...)
 	else if (f$nv == 3) .plot.pr3 (f, ...)
 	else stop ("can only plot 2 or 3 variable case")
@@ -79,5 +77,6 @@ s3x_plot.cppr = function (f, ...)
 	else if (contour)
 		tcp (f, ...)
 }
+
 
 

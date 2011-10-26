@@ -6,15 +6,16 @@ options(continue=" ")
 options(SweaveHooks=list(fig=function()
 par(mar=c(4.1, 4.1, 2.6, 1.6), cex=0.7, cex.main=1)))
 library (rrv)
-data = read.package.data ("rrv", "markowitz.csv")
+data = read_package_data ("rrv", "markowitz.csv", FALSE)
 @
 
 \noindent In general, weight represents a triangle (potentially a hyper-triangle). This is the most intuitive in the 3-source case, where triangular heatmaps, show the value of a conditional parameter given a vector of 3 weights. In future contour plots may be used instead.
 
 Note that each plot, uses a separate scale (in order to achieve maximum colour variation). Hence, two points with the same colour, each from a separate plot, may represent quite different values.
 <<>>=
-x = as.matrix (data [,2:4])
-samp (x)
+x = data [,2:4]
+sample_deterministic (x)
+x = as.matrix (x)
 @
 
 <<>>=
@@ -47,4 +48,5 @@ plot (f_q0.50)
 plot (f_q0.75)
 @
 \end {center}
+
 
